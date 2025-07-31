@@ -33,7 +33,8 @@ import {
   Bell,
   CreditCard,
   Shield,
-  Building2
+  Building2,
+  Eye
 } from 'lucide-react'
 import { signOut } from "next-auth/react"
 import { usePathname } from 'next/navigation'
@@ -78,6 +79,11 @@ export function DashboardSidebar({ className }: DashboardSidebarProps) {
       icon: TrendingUp,
     },
     {
+      title: "Competitive Intel",
+      url: "/dashboard/competitive",
+      icon: Eye, // Add this import: Eye
+    },
+    {
       title: "Data Sources",
       url: "/dashboard/integrations",
       icon: Database,
@@ -99,11 +105,6 @@ export function DashboardSidebar({ className }: DashboardSidebarProps) {
       title: "Team",
       url: "/dashboard/settings/team",
       icon: Users,
-    },
-    {
-      title: "Integrations",
-      url: "/dashboard/settings/integrations",
-      icon: Database,
     },
     {
       title: "Notifications",
