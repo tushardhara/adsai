@@ -12,16 +12,17 @@ Aura is an AI-powered analytics platform for D2C brands that connects to multipl
 ### Frontend (Next.js 14)
 - **Framework**: Next.js 14 with App Router
 - **Styling**: Tailwind CSS for responsive design
-- **Authentication**: Auth0 for user management
+- **Authentication**: Auth.js (NextAuth.js) for user management
 - **Hosting**: AWS S3 + CloudFront for static site deployment
 - **State Management**: React hooks and Context API
 - **HTTP Client**: Fetch API with custom hooks
+- **UI Components**: shadcn/ui component library
 
 ### Backend (Go + AWS)
 - **Runtime**: Go 1.21+ on AWS Lambda
 - **API Gateway**: REST APIs with Lambda integration
 - **Database**: PostgreSQL (AWS RDS)
-- **Authentication**: Auth0 JWT validation
+- **Authentication**: Auth.js JWT validation
 - **External APIs**: Facebook Graph API, Shopify API, Claude API
 
 ### Infrastructure & DevOps
@@ -36,7 +37,37 @@ Aura is an AI-powered analytics platform for D2C brands that connects to multipl
 ```
 adsai/
 ├── frontend/                    # Next.js application
-│   └── package.json
+│   ├── .env.local              # Environment variables
+│   ├── .gitignore              # Git ignore rules
+│   ├── components.json         # shadcn/ui configuration
+│   ├── eslint.config.mjs       # ESLint configuration
+│   ├── next-env.d.ts           # Next.js TypeScript declarations
+│   ├── next.config.ts          # Next.js configuration
+│   ├── package.json            # Dependencies and scripts
+│   ├── postcss.config.mjs      # PostCSS configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   ├── public/                 # Static assets
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   └── window.svg
+│   └── src/                    # Source code
+│       ├── auth.ts             # Auth.js configuration
+│       ├── middleware.ts       # Next.js middleware
+│       ├── app/                # App Router pages and layouts
+│       │   ├── dashboard/      # Dashboard pages and providers
+│       │   │   ├── page.tsx    # Main dashboard page
+│       │   │   └── providers/  # Dashboard context providers
+│       │   │       └── dashboard-provider.tsx
+│       │   ├── layout.tsx      # Root layout
+│       │   ├── page.tsx        # Home page
+│       │   └── globals.css     # Global styles
+│       ├── components/         # Reusable React components
+│       │   └── ui/             # shadcn/ui components
+│       │       └── sidebar.tsx # Sidebar component
+│       ├── hooks/              # Custom React hooks
+│       └── lib/                # Utility functions and configurations
 ├── backend/                     # Go Lambda functions
 │   ├── cmd/                    # Lambda entry points
 │   │   ├── auth/               # Authentication Lambda
@@ -44,7 +75,7 @@ adsai/
 │   │   ├── integrations/       # Data source integrations
 │   │   └── aura/               # Aura AI chat Lambda
 │   ├── internal/               # Private application code
-│   │   ├── auth/               # Auth0 JWT validation
+│   │   ├── auth/               # Auth.js JWT validation
 │   │   ├── database/           # PostgreSQL operations
 │   │   ├── handlers/           # HTTP request handlers
 │   │   ├── models/             # Data models
@@ -71,7 +102,7 @@ adsai/
 │   │   ├── database.yaml       # RDS PostgreSQL
 │   │   ├── lambda.yaml         # Lambda functions
 │   │   ├── api-gateway.yaml    # API Gateway
-│   │   ├── auth0.yaml          # Auth0 configuration
+│   │   ├── auth.yaml           # Auth.js configuration
 │   │   └── frontend.yaml       # S3 + CloudFront
 │   ├── parameters/             # Environment-specific parameters
 │   │   ├── dev.json
@@ -93,8 +124,8 @@ adsai/
 
 ### Core User Flow
 1. **Home Page**: Landing page with product overview
-2. **Auth0 Login/Signup**: Secure authentication
-3. **Dashboard**: User's project overview
+2. **Auth.js Login/Signup**: Secure authentication with multiple providers
+3. **Dashboard**: User's project overview with sidebar navigation
 4. **Create Project**: Set up new D2C brand analysis
 5. **Connect Data Sources**: 
    - **Ads Providers**: Facebook, Google Ads, Amazon Ads
@@ -102,10 +133,10 @@ adsai/
 6. **Aura AI Interface**: Chat with integrated dashboard and artifact support
 
 ### Key Components
-- **Project Management**: Multi-tenant project isolation
+- **Project Management**: Multi-tenant project isolation with dashboard provider
 - **Data Source Connectors**: OAuth flows for external APIs
 - **Aura AI Engine**: Claude-powered analysis with artifact generation
-- **Dashboard**: Real-time analytics and insights
+- **Dashboard**: Real-time analytics and insights with sidebar navigation
 - **Alert System**: Proactive notifications and recommendations
 
 ## Development Guidelines
@@ -126,7 +157,9 @@ adsai/
 - Follow Next.js 14 App Router conventions
 - Implement proper SEO with metadata APIs
 - Use Tailwind CSS utility classes consistently
-- Implement Auth0 authentication flows
+- Implement Auth.js authentication flows
+- Use shadcn/ui components for consistent UI design
+- Implement Context API for state management (dashboard provider pattern)
 
 ### Database Design with Atlas
 - Use Atlas CLI for schema management and migrations
@@ -141,7 +174,7 @@ adsai/
 - RESTful endpoints with proper HTTP status codes
 - Consistent JSON response format with error handling
 - Implement pagination for list endpoints
-- Use Auth0 JWT for authentication and authorization
+- Use Auth.js JWT for authentication and authorization
 - Implement rate limiting and input validation
 - Use API Gateway for request routing and throttling
 
@@ -225,6 +258,7 @@ atlas schema inspect --env dev
 - User authorization with project-level permissions
 - Resource scoping for all API endpoints
 - Audit logging for compliance and debugging
+- Dashboard provider pattern for project context management
 
 ### Data Source Management
 - Modular integration architecture for easy addition of new sources
@@ -245,4 +279,12 @@ atlas schema inspect --env dev
 - Use Atlas environments for dev/staging/prod schema management
 - Maintain schema documentation through Atlas introspection
 
-This is a modern, scalable D2C analytics platform built with production-ready patterns, AWS best practices, and Atlas for robust database
+### Auth.js Integration Patterns
+- Use proper provider configuration for multiple OAuth providers
+- Implement session management with secure cookies
+- Handle JWT validation on backend Lambda functions
+- Implement proper logout and session cleanup
+- Use Auth.js middleware for protected routes
+- Configure callbacks and redirect URLs properly
+
+This is a modern, scalable D2C analytics platform built with production-ready patterns, AWS best practices, and Atlas for robust database management.
